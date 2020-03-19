@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Step by Step form</title>
+</head>
+<body>
+    <div class="container pt-5 pb-5">
+        <form id="app">
+            <span v-for="e in errors">{{ e }}  </span>
+            <section v-if="step == 1">
+                <h3> Step 1 </h3>
+                <input v-model="form.name" type="text" placeholder="whats your name?" class="form-control form-control-lg">
+            </section>
+            <section v-if="step == 2">
+                <h3> Step 2 </h3>
+                <input v-model="form.phone" type="tel" placeholder="whats your phone number?" class="form-control form-control-lg">
+                <input v-model="form.email" type="email" placeholder="whats your email address?" class="form-control form-control-lg">
+            </section>
+            <section v-if="step == 3">
+                <h3> Step 3</h3>
+                <textarea v-model="form.message" placeholder="Type your message" class="form-control form-control-lg"></textarea>
+            </section>
+            <hr>
+            <button class="btn btn-primary"
+            v-if="step !== 1"
+            @click.prevent="prevStep"> Previous step </button>
+
+            <button class="btn btn-primary"
+            v-if="step != totalSteps"
+            @click.prevent="nextStep"> Next step </button>
+
+            <button class="btn btn-primary"
+            v-if="step == 3"
+            @click.prevent="sendEnquiry"> Send Enquiry </button>
+        </form>
+    </div>
+    <script>
+        const app = new Vue({
+            el: "#app",
+            
+            data: {
+                step: 1,
+                totalSteps : 3,
+                errors: [],
+                form: {
+                    name: null,
+                    email: null,
+                    phone: null,
+                    message : null
+                }  
+            },
+
+            methods:{
+
+                nextStep: function(){
+                    
+                    if(this.step == 1){
+                        if(!this.form.name){
+                            this.errors = 'Please fill out your name';
+                            return false;
+                        }
+                    }
+
+                    if(this.step == 2){
+
+                        if(!this.form.phone){
+                            this.errors = 'Please fill out your phone';
+                            return false;
+                        }
+
+                        if(!this.form.email){
+                            this.errors = 'Please fill out your email adress';
+                            return false;
+                        }
+                    }
+
+                    this.errors = null;
+                    this.step++;
+                },
+
+                prevStep: function(){
+                    this.step--;
+                },
+                sendEnquiry: function(){
+
+                    if(this.step == 3){
+                        if(!this.form.message){
+                            this.errors = 'Please fill out your message';
+                            return false;
+                        }
+                    }
+
+                    this.errors = null;
+                    alert("That's all folks!!!")
+                },
+            },
+            mounted(){
+                
+            }
+        });
+    </script>
+</body>
+</html>
