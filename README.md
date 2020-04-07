@@ -1,2 +1,2 @@
-# javascript---general-things
+# JS
 misc files and micro projects
